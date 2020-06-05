@@ -1,0 +1,122 @@
+
+#include <stdlib.h>
+#include<iostream>
+#include <GLFW/glut.h>
+
+using namespace std;
+
+GLfloat Ang;
+GLint Dir, V;
+
+
+void Desenha(void)
+{
+	
+	glMatrixMode(GL_MODELVIEW);
+	
+	glLoadIdentity();
+
+	glClear(GL_COLOR_BUFFER_BIT);
+
+
+	glTranslatef(Ang, 0.0f, 0.0f);
+
+	glColor3f(10.0f, 0.0f, 1.0f);
+
+	glBegin(GL_QUADS);
+	glVertex2f(-50.0f, -15.0f);
+	glVertex2f(-50.0f, 5.0f);
+	glVertex2f(-10.0f, 5.0f);
+	glVertex2f(-10.0f, -15.0f);
+	glEnd();
+
+	glBegin(GL_TRIANGLES);
+	glVertex2f(-10.0f, 5.0f);
+	glVertex2f(5, -15.0f);
+	glVertex2f(-10.0f, -15.0f);
+	glEnd();
+
+	glBegin(GL_TRIANGLES);
+	glVertex2f(-50.0f, -15.0f);
+	glVertex2f(-50.0f, 15.0f);
+	glVertex2f(-30.0f, -15.0f);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glVertex2f(-30.0f, -30.0f);
+	glVertex2f(-30.0f, 20.0f);
+	glVertex2f(-20.0f, 20.0f);
+	glVertex2f(-20.0f, -30.0f);
+	glEnd();
+
+
+	glutSwapBuffers();
+}
+
+void AlteraTamanhoJanela(GLsizei w, GLsizei h)
+{
+	GLsizei largura, altura;
+
+
+	if (h == 0) h = 1;
+
+	cout << w << endl;
+	cout << h << endl;
+
+	
+	largura = w;
+	altura = h;
+
+	
+	glViewport(0, 0, largura, altura);
+
+	
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	if (largura <= altura)
+		gluOrtho2D(-50.0f, 50.0f, -50.0f * altura / largura, 50.0f * altura / largura);
+	else
+		gluOrtho2D(-50.0f * largura / altura, 50.0f * largura / altura, -50.0f, 50.0f);
+}
+void Anima(int value)
+{
+	Ang = Ang + Dir;
+	glutPostRedisplay();
+	glutTimerFunc(V, Anima, 1);
+}
+
+
+void Inicializa(void)
+{
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	Ang = 0;
+	Dir = 10;
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(-50.0f, 50.0f, -50.0f, 50.0f);
+
+}
+
+int main(void)
+{
+	
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+	V = 1000;
+	
+	glutInitWindowPosition(5, 5);
+
+	glutInitWindowSize(450, 450);
+
+	glutCreateWindow("Questão 3 - Daniele");
+
+	glutDisplayFunc(Desenha);
+
+	glutTimerFunc(V, Anima, 2);
+
+	Inicializa();
+
+	glutMainLoop();
+
+	return 0;
+}

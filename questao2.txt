@@ -1,0 +1,65 @@
+
+#include <iostream>
+#include <stdio.h>
+#include <string.h>
+#include <GLFW/glut.h>
+#include <Windows.h>
+#include <time.h> //necessário p/ função time()
+using namespace std;
+
+
+void init(void) {
+	glClearColor(1.0, 1.0, 1.0, 0);
+	glMatrixMode(GL_PROJECTION);
+	gluOrtho2D(0, 1700, 0, 800);
+}
+
+double defineCor() {
+	double cor;
+	cor = (double)rand() / ((double)RAND_MAX + 1);
+	return cor;
+}
+
+void geraPontos() {
+	double tamanho_ponto = (double)(rand() % 50) + 1;
+	int x = (rand() % 1700) + 1;
+	int y = (rand() % 800) + 1;
+	
+	glPointSize(tamanho_ponto);
+	glBegin(GL_POINTS);
+	glColor3f(defineCor(), defineCor(), defineCor());
+	glVertex2i(x, y);
+	glEnd();
+
+	glFlush();
+}
+
+
+void lineSegment(void) {
+
+	glClear(GL_COLOR_BUFFER_BIT);
+	int quantidade_pontos = 1000;
+	for (int quantidade = 0; quantidade < quantidade_pontos; quantidade++) {
+		geraPontos();
+	}
+	
+	
+}
+
+// Programa Principal 
+int main(int argc, char** argv)
+{
+	glutInit(&argc, argv);
+
+	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+
+	glutInitWindowPosition(50, 100);
+
+	glutInitWindowSize(400, 300);
+	glutCreateWindow("Questao 2 - Daniele");
+	init();
+	glutDisplayFunc(lineSegment);
+	glutMainLoop();
+
+	return 0;
+}
